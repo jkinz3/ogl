@@ -133,6 +133,7 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -154,7 +155,7 @@ int main( void )
 
 	GLuint programID = LoadShaders("VertexShader.vertexshader", "FragmentShader.fragmentshader");
 
-	
+
 
 
 	glEnable(GL_DEPTH_TEST);
