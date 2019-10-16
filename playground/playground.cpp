@@ -84,6 +84,11 @@ int main( void )
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 
+	GLuint normalBuffer;
+	glGenBuffers(1, &normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+
 	GLuint programID = LoadShaders("VertexShader.vertexshader", "FragmentShader.fragmentshader");
 
 
@@ -100,6 +105,8 @@ int main( void )
 	GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
+	glUseProgram(programID);
+	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 	
 
 	do{
@@ -114,6 +121,9 @@ int main( void )
 		glm::mat4 ViewMatrix = GetViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0f);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+		glm::vec3 lightPos = glm::vec3(4,4,4);
+		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
@@ -147,6 +157,16 @@ int main( void )
 		glBindTexture(GL_TEXTURE_2D, Texture);
 		glUniform1i(TextureID, 0);
 
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+		glVertexAttribPointer(
+			2,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+		);
 
 		// Swap buffers
 		glfwSwapBuffers(window);
