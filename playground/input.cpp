@@ -5,7 +5,6 @@ extern GLFWwindow* window;
 #include <glm/gtc/matrix_transform.hpp>
 #include "input.h"
 #include <iostream>
-#include "common/objloader.hpp"
 
 glm::mat4 ViewMatrix;
 glm::mat4 ProjectionMatrix;
