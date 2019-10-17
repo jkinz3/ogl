@@ -25,8 +25,8 @@ float verticalAngle = 0.0f;
 float CurrentFoV;
 float initialFoV = 45.0f;
 
-float speed = 3.0f;
-float mouseSpeed = .005f;
+float speed = 5.0f;
+float mouseSpeed = .1f;
 float ScrollOffset = 0.f;
 
 void computeMatricesFromInputs()
@@ -84,7 +84,7 @@ void computeMatricesFromInputs()
 	}
 
 
-	
+
 
 	float FoV = initialFoV + ScrollOffset;
 	initialFoV = FoV;
@@ -105,5 +105,5 @@ void computeMatricesFromInputs()
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	ScrollOffset = -yoffset;
-	
+
 }

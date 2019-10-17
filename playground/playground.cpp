@@ -48,7 +48,7 @@ int main( void )
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
-	bool res = loadOBJ("monkey.obj", vertices, uvs, normals);
+	bool res = loadOBJ("hydrant.obj", vertices, uvs, normals);
 
 
 
@@ -97,12 +97,13 @@ int main( void )
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-
-
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
+	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
 
 
-	GLuint Texture = loadBMP_custom("uvtemplate.bmp");
+
+	GLuint Texture = loadBMP_custom("hydrant_color.bmp");
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
 	glUseProgram(programID);
@@ -126,6 +127,8 @@ int main( void )
 		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
