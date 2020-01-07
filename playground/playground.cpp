@@ -48,7 +48,7 @@ int main( void )
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 
-	bool res = loadOBJ("hydrant.obj", vertices, uvs, normals);
+	bool res = loadOBJ("teapot.obj", vertices, uvs, normals);
 
 
 
@@ -65,6 +65,7 @@ int main( void )
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -89,7 +90,7 @@ int main( void )
 	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
 
-	GLuint programID = LoadShaders("VertexShader.vertexshader", "FragmentShader.fragmentshader");
+	GLuint programID = LoadShaders("Shaders/VertexShader.vert", "Shaders/FragmentShader.frag");
 
 
 
@@ -103,7 +104,7 @@ int main( void )
 
 
 
-	GLuint Texture = loadBMP_custom("hydrant_color.bmp");
+	GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
 	glUseProgram(programID);
