@@ -13,6 +13,7 @@ using namespace glm;
 #include "glm/gtc/matrix_transform.hpp"
 #include "common/texture.hpp"
 #include "input.h"
+#include "Components/Light.h"
 #include "common/objloader.hpp"
 
 
@@ -109,7 +110,10 @@ int main( void )
 
 	glUseProgram(programID);
 	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
+	GLuint LightColorID = glGetUniformLocation(programID, "LightColor");
+	GLuint LightIntensityID = glGetUniformLocation(programID, "LightIntensity");
 	
+	BaseLight Light(GetCameraPosition(), 30.f, glm::vec3(.5f,1.f,1.f));
 
 	do{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -119,13 +123,21 @@ int main( void )
 		glUseProgram(programID);
 
 		computeMatricesFromInputs();
+
 		glm::mat4 ProjectionMatrix = GetProjectionMatrix();
 		glm::mat4 ViewMatrix = GetViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0f);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		Light.SetLightPosition(GetCameraPosition());
+		glm::vec3 LightColor = Light.GetLightColor();
+		float LightAdjustAmount = AdjustLightBrightness();
+		float FinalLightIntensity = Light.GetLightIntensity() + LightAdjustAmount;
+		Light.SetLightIntensity(FinalLightIntensity);
+		float LightIntensity = Light.GetLightIntensity();
+		glUniform3f(LightID, Light.GetWorldLocation().x , Light.GetWorldLocation().y, Light.GetWorldLocation().z);
+		glUniform3f(LightColorID, LightColor.x, LightColor.y, LightColor.z);
+		glUniform1f(LightIntensityID, LightIntensity);
 
-		glm::vec3 lightPos = glm::vec3(4,4,4);
-		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);

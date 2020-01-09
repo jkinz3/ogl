@@ -19,6 +19,7 @@ glm::mat4 GetProjectionMatrix()
 	return ProjectionMatrix;
 }
 
+
 glm::vec3 position = glm::vec3(0, 0, 5);
 float horizontalAngle = 3.14f;
 float verticalAngle = 0.0f;
@@ -28,6 +29,8 @@ float initialFoV = 45.0f;
 float speed = 5.0f;
 float mouseSpeed = .1f;
 float ScrollOffset = 0.f;
+
+glm::vec3 GetCameraPosition() { return position; }
 
 void computeMatricesFromInputs()
 {
@@ -82,6 +85,10 @@ void computeMatricesFromInputs()
 	{
 		position -= up * deltaTime * speed;
 	}
+	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+	{
+
+	}
 
 
 
@@ -106,4 +113,17 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	ScrollOffset = -yoffset;
 
+}
+
+float AdjustLightBrightness()
+{
+	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+	{
+		return 5.f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+	{
+		return -5.f;
+	}
+	return 0.0f;
 }
